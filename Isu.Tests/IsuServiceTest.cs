@@ -1,4 +1,4 @@
-using Isu.Interfaces;
+using Isu.Services;
 using Isu.Tools;
 using NUnit.Framework;
 
@@ -6,13 +6,13 @@ namespace Isu.Tests
 {
     public class Tests
     {
-        private IIsu _isu;
+        private IIsuService _isuService;
 
         [SetUp]
         public void Setup()
         {
             //TODO: implement
-            _isu = null;
+            _isuService = null;
         }
 
         [Test]

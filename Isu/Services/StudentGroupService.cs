@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Isu.Interfaces;
 using Isu.Models;
 using Isu.Tools;
-using Group = Isu.Models.Group;
 
 namespace Isu.Services
 {
-    public class StudentGroupService
+    public class StudentGroupService : IIsuService
     {
+        public List<Group> Groups { get; } = new List<Group>();
         public List<Student> Students { get; } = new List<Student>();
         public List<StudentGroup> StudentGroups { get; } = new List<StudentGroup>();
+        public Group AddGroup(string name)
+        {
+            Groups.Add(new Group(Groups.Count, name));
+            return Groups.Last();
+        }
 
         public Student AddStudent(Group group, string name)
         {
-            Students.Add(new Student() { StudentId = Students.Count, StudentName = name, GroupName = group });
+            Students.Add(new Student(Students.Count, name, group));
             return Students.Last();
         }
 
@@ -52,7 +55,19 @@ namespace Isu.Services
         public List<Student> FindStudents(string groupName)
         {
             List<Student> result = Students.FindAll(sp => sp.GroupName.GroupName == groupName);
-            Console.Write($"Students under the group name - {groupName}: ");
+            Console.WriteLine($"Students under the group name - {groupName}: ");
+            return result;
+        }
+
+        public List<Student> FindStudents(CourseNumber courseNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Group FindGroup(string groupName)
+        {
+            Group result = Groups.Find(sp => sp.GroupName == groupName);
+            Console.Write($"Group under the name - {groupName}: ");
             if (result == null)
             {
                 return null;
@@ -61,8 +76,21 @@ namespace Isu.Services
             return result;
         }
 
-        public void ChangeStudentGroup(Student student, Group newGroup)
+        public List<Group> FindGroups(CourseNumber courseNumber)
         {
+            throw new NotImplementedException();
+        }
+
+        public List<Group> FindGroups(string groupName)
+        {
+            List<Group> result = Groups.FindAll(sp => sp.GroupName.Contains(groupName));
+            Console.WriteLine($"All find groups:");
+            return result;
+        }
+
+        public void ChangeStudentGroup(string student, string newGroup)
+        {
+            IEnumerable<Student> result = Students.Select(groupName => Students.SingleOrDefault(p => p.GroupName == groupName.GroupName) ?? groupName);
         }
     }
 }
