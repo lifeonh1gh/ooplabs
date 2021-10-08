@@ -4,8 +4,6 @@ namespace Isu.Tools
 {
     public class IsuException : Exception
     {
-        private string messageDetails = string.Empty;
-
         public IsuException()
         {
         }
@@ -19,7 +17,5 @@ namespace Isu.Tools
             : base(message, innerException)
         {
         }
-
-        public override string Message => $"Error Message: {messageDetails}";
     }
 }
