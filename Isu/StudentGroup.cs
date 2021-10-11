@@ -23,14 +23,14 @@ namespace Isu
             if (name.StartsWith("M3"))
             {
                 int.TryParse(name.Substring(3, 2), out var intId);
-                Groups.Add(new Group(intId, name));
+                Group temp = new Group(intId, name);
+                Groups.Add(temp);
+                return temp;
             }
             else
             {
                 throw new IsuException();
             }
-
-            return Groups.Last();
         }
 
         public Student AddStudent(Group group, string name)
