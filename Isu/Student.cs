@@ -13,7 +13,7 @@ namespace Isu
 
             Id = id;
             Name = name;
-            Group = group;
+            Group = group ?? throw new NullReferenceException(nameof(Group.Name));
         }
 
         public int Id { get; }

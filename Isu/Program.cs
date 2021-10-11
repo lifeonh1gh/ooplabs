@@ -26,7 +26,6 @@ namespace Isu
             WriteLine($"\tID: {student2.Id} \tNAME: {student2.Name} \tGROUP: {student2.Group.Name}");
             WriteLine($"\tID: {student3.Id} \tNAME: {student3.Name} \tGROUP: {student3.Group.Name}");
 
-            WriteLine(temp.GetStudent(2).Name);
             WriteLine(temp.FindStudent("radik").Name);
             WriteLine(temp.FindGroup("M3302").Name);
 
@@ -36,28 +35,13 @@ namespace Isu
                 WriteLine($"\tId: {st.Id} \tName: {st.Name} \tGroup: {st.Group.Name}");
             }
 
-            /*WriteLine(temp.FindGroups());
-            WriteLine(temp.FindStudents());*/
-
             temp.ChangeStudentGroup("radik", group3);
-
-            var course2 = new CourseNumber(2);
-            var course3 = new CourseNumber(3);
-            var course4 = new CourseNumber(4);
 
             WriteLine($"\nAll groups found under the course number:");
             List<Group> groups = temp.FindGroups(2);
-            /*foreach (Group gr in groups)
-            {
-                WriteLine($"\tId: {gr.Id} \tName: {gr.Name}");
-            }*/
 
             WriteLine($"\nAll students found under the course number:");
             List<Student> students = temp.FindStudents(3);
-            /*foreach (Student st in students)
-            {
-                WriteLine($"\tId: {st.Id} \tName: {st.Name} Group: {st.Group}\t");
-            }*/
         }
     }
 }

@@ -1,27 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Isu.Services;
 using Isu.Tools;
 
 namespace Isu
 {
-    public class StudentGroup
+    public class StudentGroup : IIsuService
     {
         private List<Group> Groups { get; } = new List<Group>();
         private List<Student> Students { get; } = new List<Student>();
 
+        public int GenerateId()
+        {
+            Random generate = new Random();
+            int rand = generate.Next(100000, 999999);
+            return rand;
+        }
+
         public Group AddGroup(string name)
         {
-            if (Groups.Count < 3)
+            if (name.StartsWith("M3"))
             {
-                if (name.StartsWith("M3"))
-                {
-                    Groups.Add(new Group(Groups.Count, name));
-                }
-                else
-                {
-                    Console.WriteLine("Invalid name of group!");
-                }
+                int.TryParse(name.Substring(3, 2), out var intId);
+                Groups.Add(new Group(intId, name));
             }
             else
             {
@@ -33,13 +35,15 @@ namespace Isu
 
         public Student AddStudent(Group group, string name)
         {
-            if (Students.Count < 10)
+            int randId = GenerateId();
+            const int count = 10;
+            if (Students.Count < count)
             {
-                Students.Add(new Student(Students.Count, name, group));
+                Students.Add(new Student(randId, name, group));
             }
             else
             {
-                throw new Exception();
+                throw new IsuException("Student in group limit reached");
             }
 
             return Students.Last();
@@ -47,15 +51,14 @@ namespace Isu
 
         public Student GetStudent(int id)
         {
-            Student student = (from s in Students where s.Id == id select s).First();
-            if (student != null)
+            try
             {
-                Console.Write($"\nStudent under the index - {id}: ");
+                Student student = Students.FirstOrDefault(s => s.Id == id);
                 return student;
             }
-            else
+            catch (Exception e)
             {
-                throw new IsuException();
+                throw new IsuException(e.Message);
             }
         }
 
@@ -63,11 +66,6 @@ namespace Isu
         {
             Student result = Students.Find(student => student.Name == name);
             Console.Write($"\nStudent under the name - {name}: ");
-            if (result == null)
-            {
-                return null;
-            }
-
             return result;
         }
 
@@ -90,18 +88,13 @@ namespace Isu
                 }
             }
 
-            return null;
+            return Enumerable.Empty<Student>() as List<Student>;
         }
 
         public Group FindGroup(string groupName)
         {
             Group result = Groups.Find(g => g.Name == groupName);
             Console.Write($"\nGroup under the name - {groupName}: ");
-            if (result == null)
-            {
-                return null;
-            }
-
             return result;
         }
 
@@ -110,11 +103,9 @@ namespace Isu
             IEnumerable<string> groups = Groups.Select(g => g.Name);
             foreach (var g in groups)
             {
-                /*string cn = g.Substring(2, 1);*/
                 int.TryParse(g.Substring(2, 1), out var intValue);
                 if (intValue == courseNumber)
                     Console.WriteLine(g);
-                /*Console.WriteLine(cn);*/
             }
 
             return null;
@@ -122,12 +113,12 @@ namespace Isu
 
         public void ChangeStudentGroup(string name, Group newGroup)
         {
-            var ex = new IsuException($"Group change error for student");
             try
             {
+                int randId = GenerateId();
                 Console.WriteLine($"\nStudents before changed group:\n");
                 Students.RemoveAll((st) => st.Name == name);
-                Students.Add(new Student(Students.Count + 1, name, newGroup));
+                Students.Add(new Student(randId, name, newGroup));
                 IEnumerable<Student> query = Students.Select(c => c);
                 foreach (Student student in Students)
                 {
@@ -136,8 +127,7 @@ namespace Isu
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw ex;
+                throw new IsuException($"Group change error for student", e);
             }
         }
     }

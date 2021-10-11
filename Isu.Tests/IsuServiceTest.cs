@@ -19,7 +19,7 @@ namespace Isu.Tests
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
             var temp = new StudentGroup();
-            Group group1 = temp.AddGroup("MZ312");
+            Group group1 = temp.AddGroup("M3302");
             Student student1 = temp.AddStudent(group1, "radik");
             Assert.AreEqual(student1, student1);
         }
@@ -48,7 +48,9 @@ namespace Isu.Tests
         public void TransferStudentToAnotherGroup_GroupChanged()
         {
             var temp = new StudentGroup();
-            Group group2 = temp.AddGroup("MZ455");
+            Group group1 = temp.AddGroup("M3302");
+            temp.AddStudent(group1, "radik");
+            Group group2 = temp.AddGroup("M3403");
             temp.ChangeStudentGroup("radik", group2);
             Assert.AreEqual(group2, group2);
         }
