@@ -87,7 +87,7 @@ namespace Isu
                 }
             }
 
-            return Enumerable.Empty<Student>() as List<Student>;
+            return Enumerable.Empty<Student>().ToList();
         }
 
         public Group FindGroup(string groupName)
@@ -112,7 +112,7 @@ namespace Isu
                     return FindGroupsByName(g);
             }
 
-            return null;
+            return Enumerable.Empty<Group>().ToList();
         }
 
         public void ChangeStudentGroup(string name, Group newGroup)
