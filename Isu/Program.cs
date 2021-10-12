@@ -26,22 +26,21 @@ namespace Isu
             WriteLine($"\tID: {student2.Id} \tNAME: {student2.Name} \tGROUP: {student2.Group.Name}");
             WriteLine($"\tID: {student3.Id} \tNAME: {student3.Name} \tGROUP: {student3.Group.Name}");
 
-            WriteLine(temp.FindStudent("radik").Name);
-            WriteLine(temp.FindGroup("M3302").Name);
-
-            List<Student> allStudents = temp.FindStudents("M3302");
-            foreach (var st in allStudents)
-            {
-                WriteLine($"\tId: {st.Id} \tName: {st.Name} \tGroup: {st.Group.Name}");
-            }
-
             temp.ChangeStudentGroup("radik", group3);
 
             WriteLine($"\nAll groups found under the course number:");
             List<Group> groups = temp.FindGroups(2);
+            foreach (var gr in groups)
+            {
+                WriteLine($"\tId: {gr.Id} \tName: {gr.Name}");
+            }
 
             WriteLine($"\nAll students found under the course number:");
-            List<Student> students = temp.FindStudents(3);
+            List<Student> students = temp.FindStudentsByCourse(3);
+            foreach (var st in students)
+            {
+                WriteLine($"\tId: {st.Id} \tName: {st.Name} \tGroup: {st.Group.Name}");
+            }
         }
     }
 }

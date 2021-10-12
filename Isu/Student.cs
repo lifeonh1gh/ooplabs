@@ -1,4 +1,5 @@
 ﻿using System;
+using Isu.Tools;
 
 namespace Isu
 {
@@ -8,7 +9,7 @@ namespace Isu
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new IsuException("Unable to create Student", new ArgumentNullException(nameof(name)));
             }
 
             Id = id;

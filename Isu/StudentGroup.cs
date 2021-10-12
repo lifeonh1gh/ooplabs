@@ -15,7 +15,7 @@ namespace Isu
         {
             Random generate = new Random();
             int rand = generate.Next(100000, 999999);
-            return rand;
+            return rand + 1;
         }
 
         public Group AddGroup(string name)
@@ -37,16 +37,17 @@ namespace Isu
         {
             int randId = GenerateId();
             const int count = 10;
+            Student student = new Student(randId, name, group);
             if (Students.Count < count)
             {
-                Students.Add(new Student(randId, name, group));
+                Students.Add(student);
             }
             else
             {
                 throw new IsuException("Student in group limit reached");
             }
 
-            return Students.Last();
+            return student;
         }
 
         public Student GetStudent(int id)
@@ -65,18 +66,16 @@ namespace Isu
         public Student FindStudent(string name)
         {
             Student result = Students.Find(student => student.Name == name);
-            Console.Write($"\nStudent under the name - {name}: ");
             return result;
         }
 
-        public List<Student> FindStudents(string groupName)
+        public List<Student> FindStudentsByGroup(string groupName)
         {
             List<Student> result = Students.FindAll(student => student.Group.Name == groupName);
-            Console.WriteLine($"\nStudents under the group name - {groupName}: \n");
             return result;
         }
 
-        public List<Student> FindStudents(int courseNumber)
+        public List<Student> FindStudentsByCourse(int courseNumber)
         {
             IEnumerable<string> studentgroup = Students.Select(s => s.Group.Name).ToList();
             foreach (string s in studentgroup)
@@ -84,7 +83,7 @@ namespace Isu
                 int.TryParse(s.Substring(2, 1), out var intValue);
                 if (intValue == courseNumber)
                 {
-                    Console.WriteLine(courseNumber);
+                    return FindStudentsByGroup(s);
                 }
             }
 
@@ -94,7 +93,12 @@ namespace Isu
         public Group FindGroup(string groupName)
         {
             Group result = Groups.Find(g => g.Name == groupName);
-            Console.Write($"\nGroup under the name - {groupName}: ");
+            return result;
+        }
+
+        public List<Group> FindGroupsByName(string groupName)
+        {
+            List<Group> result = Groups.FindAll(group => group.Name == groupName);
             return result;
         }
 
@@ -105,7 +109,7 @@ namespace Isu
             {
                 int.TryParse(g.Substring(2, 1), out var intValue);
                 if (intValue == courseNumber)
-                    Console.WriteLine(g);
+                    return FindGroupsByName(g);
             }
 
             return null;
@@ -113,13 +117,12 @@ namespace Isu
 
         public void ChangeStudentGroup(string name, Group newGroup)
         {
+            Console.WriteLine("\nStudents before changed group:");
             try
             {
-                int randId = GenerateId();
-                Console.WriteLine($"\nStudents before changed group:\n");
-                Students.RemoveAll((st) => st.Name == name);
-                Students.Add(new Student(randId, name, newGroup));
-                IEnumerable<Student> query = Students.Select(c => c);
+                int oldId = Students[Index.Start].Id;
+                Students.RemoveAll(st => st.Name == name);
+                Students.Add(new Student(oldId, name, newGroup));
                 foreach (Student student in Students)
                 {
                     Console.WriteLine($"\tId: {student.Id} \tName: {student.Name} \tNew group: {student.Group.Name}");

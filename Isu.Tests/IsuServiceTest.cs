@@ -21,27 +21,28 @@ namespace Isu.Tests
             var temp = new StudentGroup();
             Group group1 = temp.AddGroup("M3302");
             Student student1 = temp.AddStudent(group1, "radik");
-            Assert.AreEqual(student1, student1);
+            Student actual = temp.FindStudent("radik");
+            Assert.AreEqual(student1, actual);
         }
 
         [Test]
         public void ReachMaxStudentPerGroup_ThrowException()
         {
+            const int count = 10;
             var temp = new StudentGroup();
             Group group1 = temp.AddGroup("M3201");
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < count; i++)
             {
                 temp.AddStudent(group1, "radik");
             }
-            Assert.Catch<IsuException>(() => throw new IsuException());
+            Assert.Catch<IsuException>(() => temp.AddStudent(group1, "radik"));
         }
 
         [Test]
         public void CreateGroupWithInvalidName_ThrowException()
         {
             var temp = new StudentGroup();
-            temp.AddGroup("M3201");
-            Assert.Catch<IsuException>(() => throw new IsuException());
+            Assert.Catch<IsuException>(() => temp.AddGroup("M4201"));
         }
 
         [Test]

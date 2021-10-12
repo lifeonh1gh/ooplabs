@@ -8,9 +8,10 @@ namespace Isu.Services
         Student AddStudent(Group group, string name);
         Student GetStudent(int id);
         Student FindStudent(string name);
-        List<Student> FindStudents(string groupName);
-        List<Student> FindStudents(int courseNumber);
+        List<Student> FindStudentsByGroup(string groupName);
+        List<Student> FindStudentsByCourse(int courseNumber);
         Group FindGroup(string groupName);
+        List<Group> FindGroupsByName(string groupName);
         List<Group> FindGroups(int courseNumber);
         void ChangeStudentGroup(string name, Group newGroup);
     }
