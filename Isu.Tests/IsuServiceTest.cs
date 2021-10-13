@@ -6,54 +6,49 @@ namespace Isu.Tests
 {
     public class Tests
     {
-        private IIsuService _isuService;
+        private StudentGroup _temp;
+        private Group _group1;
+        private Group _group2;
 
         [SetUp]
         public void Setup()
         {
-            //TODO: implement
-            _isuService = null;
+            _temp = new StudentGroup();
+            _group1 = _temp.AddGroup("M3302");
+            _group2 = _temp.AddGroup("M3403");
         }
 
         [Test]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
-            var temp = new StudentGroup();
-            Group group1 = temp.AddGroup("M3302");
-            Student student1 = temp.AddStudent(group1, "radik");
-            Student actual = temp.FindStudent("radik");
-            Assert.AreEqual(student1, actual);
+            Student expected = _temp.AddStudent(_group1, "radik");
+            Student actual = _temp.FindStudent("radik");
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void ReachMaxStudentPerGroup_ThrowException()
         {
             const int count = 10;
-            var temp = new StudentGroup();
-            Group group1 = temp.AddGroup("M3201");
             for (int i = 0; i < count; i++)
             {
-                temp.AddStudent(group1, "radik");
+                _temp.AddStudent(_group1, "radik");
             }
-            Assert.Catch<IsuException>(() => temp.AddStudent(group1, "radik"));
+            Assert.Catch<IsuException>(() => _temp.AddStudent(_group1, "radik"));
         }
 
         [Test]
         public void CreateGroupWithInvalidName_ThrowException()
         {
-            var temp = new StudentGroup();
-            Assert.Catch<IsuException>(() => temp.AddGroup("M4201"));
+            Assert.Catch<IsuException>(() => _temp.AddGroup("M4201"));
         }
 
         [Test]
         public void TransferStudentToAnotherGroup_GroupChanged()
         {
-            var temp = new StudentGroup();
-            Group group1 = temp.AddGroup("M3302");
-            temp.AddStudent(group1, "radik");
-            Group group2 = temp.AddGroup("M3403");
-            temp.ChangeStudentGroup("radik", group2);
-            Assert.AreEqual(group2, group2);
+            _temp.AddStudent(_group1, "radik");
+            _temp.ChangeStudentGroup("radik", _group2);
+            Assert.AreEqual(_group2, _group2);
         }
     }
 }
