@@ -29,7 +29,7 @@ namespace Isu
             temp.ChangeStudentGroup("radik", group3);
 
             WriteLine($"\nAll groups found under the course number:");
-            List<Group> groups = temp.FindGroups(2);
+            List<Group> groups = temp.FindGroups(3);
             foreach (var gr in groups)
             {
                 WriteLine($"\tId: {gr.Id} \tName: {gr.Name}");

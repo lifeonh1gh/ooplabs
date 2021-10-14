@@ -11,13 +11,6 @@ namespace Isu
         private List<Group> Groups { get; } = new List<Group>();
         private List<Student> Students { get; } = new List<Student>();
 
-        public int GenerateId()
-        {
-            Random generate = new Random();
-            int rand = generate.Next(100000, 999999);
-            return rand + 1;
-        }
-
         public Group AddGroup(string name)
         {
             if (name.StartsWith("M3"))
@@ -35,9 +28,9 @@ namespace Isu
 
         public Student AddStudent(Group group, string name)
         {
-            int randId = GenerateId();
             const int count = 10;
-            Student student = new Student(randId, name, group);
+            int id = 100000 + Students.Count;
+            Student student = new Student(id, name, group);
             if (Students.Count < count)
             {
                 Students.Add(student);
@@ -77,14 +70,10 @@ namespace Isu
 
         public List<Student> FindStudentsByCourse(int courseNumber)
         {
-            IEnumerable<string> studentgroup = Students.Select(s => s.Group.Name).ToList();
-            foreach (string s in studentgroup)
+            IEnumerable<string> groups = Groups.Where(g => g.IsCourseNumberEqualsTo(courseNumber)).Select(g => g.Name).ToList();
+            foreach (string s in groups)
             {
-                int.TryParse(s.Substring(2, 1), out var intValue);
-                if (intValue == courseNumber)
-                {
-                    return FindStudentsByGroup(s);
-                }
+                return FindStudentsByGroup(s);
             }
 
             return Enumerable.Empty<Student>().ToList();
@@ -104,12 +93,10 @@ namespace Isu
 
         public List<Group> FindGroups(int courseNumber)
         {
-            IEnumerable<string> groups = Groups.Select(g => g.Name);
+            IEnumerable<string> groups = Groups.Where(g => g.IsCourseNumberEqualsTo(courseNumber)).Select(g => g.Name);
             foreach (var g in groups)
             {
-                int.TryParse(g.Substring(2, 1), out var intValue);
-                if (intValue == courseNumber)
-                    return FindGroupsByName(g);
+                return FindGroupsByName(g);
             }
 
             return Enumerable.Empty<Group>().ToList();
@@ -117,20 +104,15 @@ namespace Isu
 
         public void ChangeStudentGroup(string name, Group newGroup)
         {
-            Console.WriteLine("\nStudents before changed group:");
             try
             {
                 int oldId = Students[Index.Start].Id;
                 Students.RemoveAll(st => st.Name == name);
                 Students.Add(new Student(oldId, name, newGroup));
-                foreach (Student student in Students)
-                {
-                    Console.WriteLine($"\tId: {student.Id} \tName: {student.Name} \tNew group: {student.Group.Name}");
-                }
             }
             catch (Exception e)
             {
-                throw new IsuException($"Group change error for student", e);
+                throw new IsuException("Group change error for student", e);
             }
         }
     }
