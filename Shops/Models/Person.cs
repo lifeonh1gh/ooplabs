@@ -4,9 +4,6 @@ namespace Shops.Models
 {
     public class Person
     {
-        public string Name { get; }
-        public double Money { get; set; }
-
         public Person(string name, double money)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -17,5 +14,8 @@ namespace Shops.Models
             Name = name;
             Money = money;
         }
+
+        public string Name { get; }
+        public double Money { get; set; }
     }
 }
