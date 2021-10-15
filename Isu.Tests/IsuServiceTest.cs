@@ -6,46 +6,49 @@ namespace Isu.Tests
 {
     public class Tests
     {
-        private IIsuService _isuService;
+        private StudentGroup _temp;
+        private Group _group1;
+        private Group _group2;
 
         [SetUp]
         public void Setup()
         {
-            //TODO: implement
-            _isuService = null;
+            _temp = new StudentGroup();
+            _group1 = _temp.AddGroup("M3302");
+            _group2 = _temp.AddGroup("M3403");
         }
 
         [Test]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
-            Assert.Fail();
+            Student expected = _temp.AddStudent(_group1, "radik");
+            Student actual = _temp.FindStudent("radik");
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void ReachMaxStudentPerGroup_ThrowException()
         {
-            Assert.Catch<IsuException>(() =>
+            const int count = 10;
+            for (int i = 0; i < count; i++)
             {
-                
-            });
+                _temp.AddStudent(_group1, "radik");
+            }
+            Assert.Catch<IsuException>(() => _temp.AddStudent(_group1, "radik"));
         }
 
         [Test]
         public void CreateGroupWithInvalidName_ThrowException()
         {
-            Assert.Catch<IsuException>(() =>
-            {
-
-            });
+            Assert.Catch<IsuException>(() => _temp.AddGroup("M4201"));
         }
 
         [Test]
         public void TransferStudentToAnotherGroup_GroupChanged()
         {
-            Assert.Catch<IsuException>(() =>
-            {
-
-            });
+            _temp.AddStudent(_group1, "radik");
+            _temp.ChangeStudentGroup("radik", _group2);
+            Assert.AreEqual(_group2, _group2);
         }
     }
 }
