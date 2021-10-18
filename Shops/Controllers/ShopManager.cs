@@ -40,6 +40,19 @@ namespace Shops.Controllers
             }
         }
 
+        public Shop GetShop(int shopId)
+        {
+            try
+            {
+                ShopProduct shopProduct = ShopProducts.First(sp => sp.Shop.Id == shopId);
+                return shopProduct.Shop;
+            }
+            catch (Exception e)
+            {
+                throw new ShopsException(e.Message);
+            }
+        }
+
         public ShopProduct GetProducts(int shopId)
         {
             try
@@ -57,7 +70,8 @@ namespace Shops.Controllers
         {
             var shop = Shops[shopId];
             foreach (var sp in products.Select(product =>
-                new ShopProduct(shop, product.Product, product.Amount, product.Price)))
+                new ShopProduct()
+                    { Shop = shop, Product = product.Product, Amount = product.Amount, Price = product.Price }))
             {
                 ShopProducts.Add(sp);
             }
@@ -85,7 +99,8 @@ namespace Shops.Controllers
             try
             {
                 ShopProducts.RemoveAll(sp => sp.Product.Id == productId);
-                ShopProduct shopProduct = new ShopProduct(shop, product, amount, newPrice);
+                ShopProduct shopProduct = new ShopProduct()
+                    { Shop = shop, Product = product, Amount = amount, Price = newPrice };
                 ShopProducts.Add(shopProduct);
                 return shopProduct;
             }
@@ -134,6 +149,21 @@ namespace Shops.Controllers
             }
 
             return person.Money;
+        }
+
+        public Shop FindCheapShop(List<PurchaseProduct> products)
+        {
+            var product = products[Index.Start].Product;
+            ShopProduct cheap = new ShopProduct() { Price = double.MaxValue };
+            foreach (var sp in ShopProducts)
+            {
+                if (sp.Product == product && sp.Price < cheap.Price)
+                {
+                    cheap = sp;
+                }
+            }
+
+            return cheap.Shop;
         }
     }
 }
