@@ -78,5 +78,14 @@ namespace Shops.Tests
             var actual = _person.Money;
             Assert.AreEqual(expected, actual);
         }
+        
+        [Test]
+        public void FindShopWhereCheapSupply_ReturnCheapShop()
+        {
+            _shopManager.AddProducts(0, _supplyProducts);
+            var expected = _shopManager.FindCheapShop(_purchaseProducts);
+            var actual = _shopManager.GetShop(0);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
