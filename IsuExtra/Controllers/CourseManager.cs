@@ -9,14 +9,14 @@ namespace IsuExtra.Controllers
 {
     public class CourseManager : ICourseManager
     {
-        private List<Course> Courses { get; } = new List<Course>();
-        private List<CourseFlow> CoursesFlows { get; } = new List<CourseFlow>();
-        private readonly StudentManager _studentManager;
-
         public CourseManager(StudentManager studentManager)
         {
-            _studentManager = studentManager;
+            StudentManager = studentManager;
         }
+
+        private List<Course> Courses { get; } = new List<Course>();
+        private List<CourseFlow> CoursesFlows { get; } = new List<CourseFlow>();
+        private StudentManager StudentManager { get; }
 
         public Course CreateCourse(string name)
         {
@@ -43,7 +43,7 @@ namespace IsuExtra.Controllers
             var nameCourse = Courses.ElementAt(course.Id).Name.Substring(0, 1);
             const int maxCount = 10;
             foreach (var st in studentsEnrollments.Select(student => new CourseFlow()
-                {Course = course, Student = student.Student}))
+                { Course = course, Student = student.Student }))
             {
                 if (nameCourse != st.Student.Group.Name.Substring(0, 1) && CoursesFlows.Count < maxCount)
                 {
@@ -90,8 +90,7 @@ namespace IsuExtra.Controllers
             }
         }
 
-        public List<StudentUnsigned> UnsignedStudentsOnCourse(List<StudentUnsigned> students,
-            List<StudentEnrollment> studentEnrollments, string groupName)
+        public List<StudentUnsigned> UnsignedStudentsOnCourse(List<StudentUnsigned> students, List<StudentEnrollment> studentEnrollments, string groupName)
         {
             var list = new List<StudentUnsigned>();
 

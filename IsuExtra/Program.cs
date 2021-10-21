@@ -6,9 +6,9 @@ using static System.Console;
 
 namespace IsuExtra
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var studentManager = new StudentManager();
 

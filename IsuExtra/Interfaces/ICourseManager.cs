@@ -11,7 +11,6 @@ namespace IsuExtra.Interfaces
         CourseFlow RegisterStudentToCourse(Course course, List<StudentEnrollment> studentsEnrollments);
         CourseFlow GetCourseFlow(int courseId);
         CourseFlow RemoveStudentOnCourse(int courseId, int studentId);
-        List<StudentUnsigned> UnsignedStudentsOnCourse(List<StudentUnsigned> students,
-            List<StudentEnrollment> studentEnrollments, string groupName);
+        List<StudentUnsigned> UnsignedStudentsOnCourse(List<StudentUnsigned> students, List<StudentEnrollment> studentEnrollments, string groupName);
     }
 }

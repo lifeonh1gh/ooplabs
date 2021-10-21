@@ -8,6 +8,7 @@ namespace IsuExtra.Models
         {
             Student = student ?? throw new NullReferenceException(nameof(Student.Name));
         }
+
         public Student Student { get; }
     }
 }
