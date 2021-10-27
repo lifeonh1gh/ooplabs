@@ -5,7 +5,7 @@ using IsuExtra.Interfaces;
 using IsuExtra.Models;
 using IsuExtra.Tools;
 
-namespace IsuExtra.Controllers
+namespace IsuExtra.Services
 {
     public class StudentManager : IStudentManager
     {

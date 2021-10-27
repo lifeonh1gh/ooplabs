@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using IsuExtra.Controllers;
+using IsuExtra.Services;
 using IsuExtra.Models;
 using IsuExtra.Tools;
 using NUnit.Framework;
@@ -32,7 +32,7 @@ namespace IsuExtra.Tests
         public void Setup()
         {
             _studentManager = new StudentManager();
-            _courseManager = new CourseManager(_studentManager);
+            _courseManager = new CourseManager();
             _m1 = _studentManager.AddGroup("M1211");
             _c2 = _studentManager.AddGroup("C2312");
             _ct = _courseManager.CreateCourse("Computer technology");
@@ -109,7 +109,7 @@ namespace IsuExtra.Tests
             };
             _courseManager.RegisterStudentToCourse(_ct, _studentEnrollments);
             var expected = _courseManager.RemoveStudentOnCourse(0, 100000);
-            var actual = _courseManager.GetStudents(0);
+            var actual = _courseManager.GetStudent(0);
             Assert.AreEqual(expected, actual);
         }
     }

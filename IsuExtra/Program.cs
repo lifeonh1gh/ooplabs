@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using IsuExtra.Controllers;
 using IsuExtra.Models;
+using IsuExtra.Services;
 using static System.Console;
 
 namespace IsuExtra
@@ -29,7 +29,7 @@ namespace IsuExtra
             WriteLine($"\tId: {student2.Id} \tName: {student2.Name} \tGroup: {student2.Group.Name}");
             WriteLine($"\tId: {student3.Id} \tName: {student3.Name} \tGroup: {student3.Group.Name}");
 
-            var courseManager = new CourseManager(studentManager);
+            var courseManager = new CourseManager();
             WriteLine("\nAdded courses:\n");
             Course ct = courseManager.CreateCourse("Computer technology");
             WriteLine($"\tCourseId: {ct.Id}, \tCourseName: {ct.Name}");

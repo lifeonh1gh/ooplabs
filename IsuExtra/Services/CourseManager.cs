@@ -5,37 +5,25 @@ using IsuExtra.Interfaces;
 using IsuExtra.Models;
 using IsuExtra.Tools;
 
-namespace IsuExtra.Controllers
+namespace IsuExtra.Services
 {
     public class CourseManager : ICourseManager
     {
-        public CourseManager(StudentManager studentManager)
-        {
-            StudentManager = studentManager;
-        }
-
         private List<Course> Courses { get; } = new List<Course>();
         private List<CourseFlow> CoursesFlows { get; } = new List<CourseFlow>();
-        private StudentManager StudentManager { get; }
 
         public Course CreateCourse(string name)
         {
-            Course course = new Course(Courses.Count, name);
+            var course = new Course(Courses.Count, name);
             Courses.Add(course);
             return course;
         }
 
-        public CourseFlow GetStudents(int courseId)
+        public CourseFlow GetStudent(int courseId)
         {
-            try
-            {
-                CourseFlow students = CoursesFlows.First(s => s.Course.Id == courseId);
-                return students;
-            }
-            catch (Exception e)
-            {
-                throw new IsuExtraException(e.Message);
-            }
+            var student = CoursesFlows.FirstOrDefault(s => s.Course.Id == courseId) ??
+                           throw new IsuExtraException("Student not found");
+            return student;
         }
 
         public CourseFlow RegisterStudentToCourse(Course course, List<StudentEnrollment> studentsEnrollments)
@@ -45,18 +33,22 @@ namespace IsuExtra.Controllers
             foreach (var st in studentsEnrollments.Select(student => new CourseFlow()
                 { Course = course, Student = student.Student }))
             {
-                if (nameCourse != st.Student.Group.Name.Substring(0, 1) && CoursesFlows.Count < maxCount)
-                {
-                    CoursesFlows.Add(st);
-                }
-                else
+                if (nameCourse == st.Student.Group.Name.Substring(0, 1))
                 {
                     throw new IsuExtraException(
-                        "Students in course limit or the student cannot enroll in their group's course");
+                        "Student cannot enroll in their group's course");
                 }
+
+                if (CoursesFlows.Count > maxCount)
+                {
+                    throw new IsuExtraException(
+                        "Students in course limit");
+                }
+
+                CoursesFlows.Add(st);
             }
 
-            return GetStudents(course.Id);
+            return GetStudent(course.Id);
         }
 
         public CourseFlow GetCourseFlow(int courseId)
@@ -70,19 +62,13 @@ namespace IsuExtra.Controllers
             return result;
         }
 
-        public int GetCourseFlowCount(int courseId)
-        {
-            var flow = CoursesFlows.Where(c => c.Course.Id == courseId).ToList();
-            return flow.Count;
-        }
-
         public CourseFlow RemoveStudentOnCourse(int courseId, int studentId)
         {
             try
             {
                 var flow = CoursesFlows.Where(c => c.Course.Id == courseId && c.Student.Id == studentId).ToList();
                 CoursesFlows.RemoveAll(c => c.Student.Id == studentId);
-                return GetStudents(courseId);
+                return GetStudent(courseId);
             }
             catch (Exception e)
             {
