@@ -23,7 +23,7 @@ namespace Backups
                             var value = Id.ToString();
                             var fileName = restoreFile.FilePath.Substring(0, 5);
                             var result = fileName + "_" + value;
-                            RestoreFile rFile = new RestoreFile(result);
+                            var rFile = new RestoreFile(result);
                             RestoreFiles.Add(rFile);
                         }
                     }
