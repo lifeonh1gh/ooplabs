@@ -14,6 +14,6 @@ namespace Shops.Interfaces
         ShopProduct ChangePriceProduct(int shopId, int productId, double newPrice);
         double BuyProduct(Person person, int shopId, int productId, int amount);
         double BuyConsignment(Person person, int shopId, List<PurchaseProduct> products);
-        Shop FindCheapShop(List<PurchaseProduct> products);
+        Shop FindCheapestShop(List<PurchaseProduct> products);
     }
 }

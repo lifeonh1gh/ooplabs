@@ -16,6 +16,6 @@ namespace Shops.Models
         }
 
         public int Id { get; }
-        public string Name { get; set; }
+        public string Name { get; }
     }
 }

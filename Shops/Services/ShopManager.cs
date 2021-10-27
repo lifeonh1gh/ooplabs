@@ -5,7 +5,7 @@ using Shops.Interfaces;
 using Shops.Models;
 using Shops.Tools;
 
-namespace Shops.Controllers
+namespace Shops.Services
 {
     public class ShopManager : IShopManager
     {
@@ -29,46 +29,21 @@ namespace Shops.Controllers
 
         public ShopProduct GetProduct(int productId)
         {
-            try
-            {
-                ShopProduct shopProduct = ShopProducts.First(sp => sp.Product.Id == productId);
-                return shopProduct;
-            }
-            catch (Exception e)
-            {
-                throw new ShopsException(e.Message);
-            }
+            var shopProduct = ShopProducts.FirstOrDefault(sp => sp.Product.Id == productId) ??
+                              throw new ShopsException("Product not found");
+            return shopProduct;
         }
 
         public Shop GetShop(int shopId)
         {
-            try
-            {
-                ShopProduct shopProduct = ShopProducts.First(sp => sp.Shop.Id == shopId);
-                return shopProduct.Shop;
-            }
-            catch (Exception e)
-            {
-                throw new ShopsException(e.Message);
-            }
-        }
-
-        public ShopProduct GetProducts(int shopId)
-        {
-            try
-            {
-                ShopProduct shopProducts = ShopProducts.First(sp => sp.Shop.Id == shopId);
-                return shopProducts;
-            }
-            catch (Exception e)
-            {
-                throw new ShopsException(e.Message);
-            }
+            var shop = Shops.FirstOrDefault(s => s.Id == shopId) ??
+                       throw new ShopsException("Shop not found");
+            return shop;
         }
 
         public ShopProduct AddProducts(int shopId, List<SupplyProduct> products)
         {
-            var shop = Shops[shopId];
+            var shop = Shops.FirstOrDefault(s => s.Id == shopId);
             foreach (var sp in products.Select(product =>
                 new ShopProduct()
                     { Shop = shop, Product = product.Product, Amount = product.Amount, Price = product.Price }))
@@ -76,7 +51,7 @@ namespace Shops.Controllers
                 ShopProducts.Add(sp);
             }
 
-            return GetProducts(shopId);
+            return GetProduct(shopId);
         }
 
         public ShopProduct GetShopProduct(int shopId, int productId)
@@ -92,22 +67,20 @@ namespace Shops.Controllers
 
         public ShopProduct ChangePriceProduct(int shopId, int productId, double newPrice)
         {
-            var shop = Shops[shopId];
-            var product = Products[productId];
+            var shop = Shops.FirstOrDefault(s => s.Id == shopId);
+            var product = Products.FirstOrDefault(p => p.Id == productId);
             var element = ShopProducts.ElementAt(productId);
             var amount = element.Amount;
-            try
+            if (product == null)
             {
-                ShopProducts.RemoveAll(sp => sp.Product.Id == productId);
-                ShopProduct shopProduct = new ShopProduct()
-                    { Shop = shop, Product = product, Amount = amount, Price = newPrice };
-                ShopProducts.Add(shopProduct);
-                return shopProduct;
+                throw new ShopsException("Price amount change error for product");
             }
-            catch (Exception e)
-            {
-                throw new ShopsException("Price amount change error for product", e);
-            }
+
+            ShopProducts.RemoveAll(sp => sp.Product.Id == productId);
+            var shopProduct = new ShopProduct()
+                { Shop = shop, Product = product, Amount = amount, Price = newPrice };
+            ShopProducts.Add(shopProduct);
+            return shopProduct;
         }
 
         public double BuyProduct(Person person, int shopId, int productId, int amount)
@@ -115,46 +88,62 @@ namespace Shops.Controllers
             var totalPrice = 0.0;
             foreach (var sp in ShopProducts.Where(sp => sp.Shop.Id == shopId && sp.Product.Id == productId))
             {
-                if (sp.Amount >= amount && sp.Amount > 0 && sp.Price * amount <= person.Money && person.Money > 0)
+                if (sp.Amount > amount && sp.Amount > 0)
                 {
                     sp.Amount -= amount;
+                }
+                else
+                {
+                    throw new ShopsException("Not enough product in shop");
+                }
+
+                if (sp.Price <= person.Money)
+                {
                     totalPrice += sp.Price * amount;
                 }
                 else
                 {
-                    throw new ShopsException("Not enough money or not enough product");
+                    throw new ShopsException("Not enough money");
                 }
+
+                Console.WriteLine($"{sp.Product.Name}, {sp.Product.Id}, {sp.Amount}");
+                return person.Money -= totalPrice;
             }
 
-            return person.Money -= totalPrice;
+            throw new ShopsException("Product does not exist in shop");
         }
 
         public double BuyConsignment(Person person, int shopId, List<PurchaseProduct> products)
         {
-            var element = ShopProducts.ElementAt(shopId);
+            var element = ShopProducts.Where(sp => sp.Shop.Id == shopId).ElementAt(shopId);
             var totalPrice = 0.0;
             var productPrice = element.Price;
             person.Money -= totalPrice;
             foreach (var purchaseProduct in products)
             {
-                if (purchaseProduct.Amount > 0 && person.Money >= totalPrice)
+                if (purchaseProduct.Amount <= 0)
                 {
-                    BuyProduct(person, shopId, purchaseProduct.Product.Id, purchaseProduct.Amount);
-                    totalPrice += productPrice * purchaseProduct.Amount;
+                    throw new ShopsException($"Not enough product in shop");
+                }
+                else if (person.Money <= totalPrice)
+                {
+                    throw new ShopsException("Not enough money");
                 }
                 else
                 {
-                    throw new ShopsException("Not enough money or not enough products");
+                    BuyProduct(person, shopId, purchaseProduct.Product.Id, purchaseProduct.Amount);
+                    totalPrice += productPrice * purchaseProduct.Amount;
                 }
             }
 
             return person.Money;
         }
 
-        public Shop FindCheapShop(List<PurchaseProduct> products)
+        public Shop FindCheapestShop(List<PurchaseProduct> products)
         {
-            var product = products[Index.Start].Product;
-            ShopProduct cheap = new ShopProduct() { Price = double.MaxValue };
+            var product = products[0].Product;
+
+            var cheap = new ShopProduct() { Price = double.MaxValue };
             foreach (var sp in ShopProducts)
             {
                 if (sp.Product == product && sp.Price < cheap.Price)

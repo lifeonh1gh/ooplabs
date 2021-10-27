@@ -1,10 +1,12 @@
-﻿namespace Shops.Models
+﻿using System;
+
+namespace Shops.Models
 {
     public class PurchaseProduct
     {
         public PurchaseProduct(Product product, int amount)
         {
-            Product = product;
+            Product = product ?? throw new NullReferenceException(nameof(Product.Name));
             Amount = amount;
         }
 

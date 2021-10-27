@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shops.Controllers;
 using Shops.Models;
+using Shops.Services;
 
 namespace Shops
 {
@@ -9,7 +9,7 @@ namespace Shops
     {
         private static void Main()
         {
-            var person = new Person("Rodion", 2000.0);
+            var person = new Person("Rodion", 20000.0);
             var shopManager = new ShopManager();
             Console.WriteLine("\nCreated shop:");
             Shop ikea = shopManager.CreateShop("IKEA", "Saint-Petersburg, Parnas");
@@ -36,6 +36,7 @@ namespace Shops
                 Console.WriteLine($"\tId: {pr.Product.Id}\tProduct: {pr.Product.Name} \tPrice = {pr.Price} \tAmount = {pr.Amount}");
             }
 
+            shopManager.BuyProduct(person, 0, 2, 1);
             Console.WriteLine($"\nPurchase of a consignment of the buyer's {person.Name}:");
             var productsToBuy = new List<PurchaseProduct>
             {
