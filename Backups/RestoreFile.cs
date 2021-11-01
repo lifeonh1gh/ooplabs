@@ -1,12 +1,14 @@
-﻿namespace Backups
+﻿using System;
+
+namespace Backups
 {
     public class RestoreFile
     {
-        public RestoreFile(string filePath)
+        public RestoreFile(string name)
         {
-            FilePath = filePath;
+            Name = name;
         }
 
-        public string FilePath { get; }
+        public string Name { get; }
     }
 }

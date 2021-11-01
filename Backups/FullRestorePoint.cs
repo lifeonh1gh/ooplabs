@@ -21,7 +21,7 @@ namespace Backups
                         foreach (var restoreFile in oldRestorePoints.RestoreFiles)
                         {
                             var value = Id.ToString();
-                            var fileName = restoreFile.FilePath.Substring(0, 5);
+                            var fileName = restoreFile.Name.Substring(0, 5);
                             var result = fileName + "_" + value;
                             var rFile = new RestoreFile(result);
                             RestoreFiles.Add(rFile);
@@ -36,7 +36,7 @@ namespace Backups
         public override void AddFile(RestoreFile file)
         {
             var value = Id.ToString();
-            var fileName = file.FilePath.Substring(0, 5);
+            var fileName = file.Name.Substring(0, 5);
             var result = fileName + "_" + value;
             file = new RestoreFile(result);
             RestoreFiles.Add(file);
