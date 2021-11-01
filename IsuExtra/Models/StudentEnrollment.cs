@@ -6,7 +6,11 @@ namespace IsuExtra.Models
     {
         public StudentEnrollment(Student student)
         {
-            Student = student ?? throw new NullReferenceException(nameof(Student.Name));
+            Student = student;
+            if (Student == null)
+            {
+                throw new NullReferenceException(nameof(Student.Name));
+            }
         }
 
         public Student Student { get; }

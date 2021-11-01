@@ -9,7 +9,7 @@ namespace IsuExtra.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new IsuExtraException("Unable to create Group", new ArgumentNullException(nameof(name)));
+                throw new IsuExtraException("Group name cannot be empty");
             }
 
             Id = id;

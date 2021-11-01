@@ -70,9 +70,9 @@ namespace IsuExtra.Services
                 CoursesFlows.RemoveAll(c => c.Student.Id == studentId);
                 return GetStudent(courseId);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new IsuExtraException(e.Message);
+                throw new IsuExtraException("Error deleting a student from a course");
             }
         }
 

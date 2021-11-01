@@ -1,4 +1,5 @@
 ﻿using System;
+using IsuExtra.Tools;
 
 namespace IsuExtra.Models
 {
@@ -8,7 +9,7 @@ namespace IsuExtra.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new IsuExtraException("Course name cannot be empty");
             }
 
             Id = id;

@@ -9,12 +9,16 @@ namespace IsuExtra.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new IsuExtraException("Unable to create Student", new ArgumentNullException(nameof(name)));
+                throw new IsuExtraException("Student name cannot be empty");
             }
 
             Id = id;
             Name = name;
-            Group = group ?? throw new NullReferenceException(nameof(Group.Name));
+            Group = group;
+            if (Group == null)
+            {
+                throw new NullReferenceException(nameof(Group.Name));
+            }
         }
 
         public int Id { get; }
