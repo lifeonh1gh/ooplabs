@@ -1,4 +1,5 @@
 ﻿using System;
+using Shops.Tools;
 
 namespace Shops.Models
 {
@@ -6,7 +7,12 @@ namespace Shops.Models
     {
         public PurchaseProduct(Product product, int amount)
         {
-            Product = product ?? throw new NullReferenceException(nameof(Product.Name));
+            Product = product;
+            if (Product == null)
+            {
+                throw new NullReferenceException(nameof(Product.Name));
+            }
+
             Amount = amount;
         }
 

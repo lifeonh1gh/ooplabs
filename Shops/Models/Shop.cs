@@ -1,4 +1,5 @@
 ﻿using System;
+using Shops.Tools;
 
 namespace Shops.Models
 {
@@ -8,12 +9,12 @@ namespace Shops.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ShopsException("Shop name cannot be empty");
             }
 
             if (string.IsNullOrWhiteSpace(address))
             {
-                throw new ArgumentNullException(nameof(address));
+                throw new ShopsException("Shop address cannot be empty");
             }
 
             Id = id;

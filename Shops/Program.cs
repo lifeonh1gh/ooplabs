@@ -45,6 +45,7 @@ namespace Shops
                 new PurchaseProduct(lamp, 1),
             };
             shopManager.BuyConsignment(person, 0, productsToBuy);
+            shopManager.FindCheapestShop(productsToBuy);
         }
     }
 }

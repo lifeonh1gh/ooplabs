@@ -141,17 +141,17 @@ namespace Shops.Services
 
         public Shop FindCheapestShop(List<PurchaseProduct> products)
         {
-            var product = products[0].Product;
-
             var cheap = new ShopProduct() { Price = double.MaxValue };
-            foreach (var sp in ShopProducts)
+            foreach (var product in products)
             {
-                if (sp.Product == product && sp.Price < cheap.Price)
+                foreach (var sp in ShopProducts)
                 {
-                    cheap = sp;
+                    if (sp.Product == product.Product && sp.Price < cheap.Price)
+                    {
+                        cheap = sp;
+                    }
                 }
             }
-
             return cheap.Shop;
         }
     }
