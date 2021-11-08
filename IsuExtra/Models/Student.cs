@@ -17,7 +17,7 @@ namespace IsuExtra.Models
             Group = group;
             if (Group == null)
             {
-                throw new NullReferenceException(nameof(Group.Name));
+                throw new IsuExtraException("group is null");
             }
         }
 
