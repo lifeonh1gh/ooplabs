@@ -1,0 +1,28 @@
+﻿@model Reports.Models.Employee.EmployeeSetMentorModel
+@{
+    ViewData["Title"] = "Set";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-3 my-3 border">
+    <h1>Set Mentor</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <hr/>
+            <form asp-action="SetMentor">
+                <div class="form-group">
+                    <input asp-for="MentorName" class="form-control" placeholder="mentor name"/>
+                    <span asp-validation-for="MentorName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" value="Save"/>
+                    <a class="btn btn-danger" asp-action="GetAll">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

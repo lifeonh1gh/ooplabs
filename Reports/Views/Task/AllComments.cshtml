@@ -1,0 +1,38 @@
+﻿@model IQueryable<Reports.Entities.Comment>
+@{
+    ViewData["Title"] = "Comments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a asp-action="GetAll" class="btn btn-danger">Back</a>
+
+@foreach (var item in Model)
+{
+    <div class="container p-3 my-3 border">
+        <h1>Comments</h1>
+        <hr/>
+        <dl class="row">
+            <dt class="col-sm-3">
+                Sender Employee
+            </dt>
+            <dd class="col-sm-9">
+                @item.SenderEmployee.Name
+            </dd>
+            <dt class="col-sm-3">
+                Comment Id
+            </dt>
+            <dd class="col-sm-9">
+                @item.Id
+            </dd>
+            <dt class="col-sm-3">
+                Message
+            </dt>
+            <dd class="col-sm-9">
+                @item.Message
+            </dd>
+        </dl>
+        <div>
+            <a class="btn btn-warning" asp-action="DeleteComment" asp-route-Id="@item.Id">Delete comment</a>
+        </div>
+    </div>
+}

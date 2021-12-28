@@ -1,0 +1,46 @@
+﻿@model Reports.Entities.Comment
+
+@{
+    ViewData["Title"] = "Delete Comment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Deleting Comment</h2>
+
+<h3>Would you like to continue?</h3>
+<div class="container p-3 my-3 border">
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Task)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Task)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.SenderEmployee)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.SenderEmployee)
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteComment">
+        <input type="hidden" asp-for="Id"/>
+        <input class="btn btn-primary" type="submit" value="Yes"/>
+        <a class="btn btn-danger" asp-action="GetAll">No</a>
+    </form>
+
+</div>
