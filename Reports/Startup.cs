@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Reports.Helpers;
+using Reports.Services;
 
 namespace Reports
 {
@@ -42,6 +43,8 @@ namespace Reports
 
             var mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<ITaskService, TaskService>();
             services.AddControllersWithViews();
         }
         
@@ -67,6 +70,7 @@ namespace Reports
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
