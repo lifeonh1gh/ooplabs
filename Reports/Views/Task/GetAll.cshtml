@@ -1,0 +1,86 @@
+﻿@model Pagination<Reports.Entities.TaskModel>
+@{
+    ViewData["Title"] = "All Tasks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Tasks</h1>
+
+<p style="text-align:left;margin-right:20px;">
+    <a class="btn btn-success" asp-action="Create">Create Task</a>
+</p>
+<form asp-action="GetAll" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <input type="text" name="SearchString" value="@ViewData["TaskFilter"]" placeholder="Search..."/>
+            <input type="submit" value="Search" class="btn btn-dark"/>
+            <a class="btn btn-danger" asp-action="GetAll">Back to Full List</a>
+        </p>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-success table-striped">
+        <thead>
+        <tr class="text-center">
+            <th>
+                <a asp-action="GetAll" asp-route-sortOrder="@ViewData["NameSort"]" asp-route-taskFilter="@ViewData["TaskFilter"]">Name</a>
+            </th>
+            <th>
+                <a asp-action="GetAll" asp-route-sortOrder="@ViewData["StateSort"]" asp-route-taskFilter="@ViewData["TaskFilter"]">State</a>
+            </th>
+            <th>
+                <a asp-action="GetAll" asp-route-sortOrder="@ViewData["CreationDateSort"]" asp-route-taskFilter="@ViewData["TaskFilter"]">Creation Date</a>
+            </th>
+            <th>
+                <a asp-action="GetAll" asp-route-sortOrder="@ViewData["ClosingDateSort"]" asp-route-taskFilter="@ViewData["TaskFilter"]">Closing Date</a>
+            </th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="text-center">
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.State
+                </td>
+                <td>
+                    @item.CreationDate
+                </td>
+                <td>
+                    @item.ClosingDate
+                </td>
+                <td>
+                    <a asp-action="Update" asp-controller="Task" class="btn btn-primary" asp-route-Id="@item.Id">Update</a>
+                    <a asp-action="Details" class="btn btn-info" asp-route-Id="@item.Id">Details</a>
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-Id="@item.Id">Delete</a>
+                    <a asp-action="SendComment" class="btn btn-success" asp-route-Id="@item.Id">Send Comment</a>
+                    <a asp-action="AllComments" class="btn btn-success" asp-route-Id="@item.Id">All Comments</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <a asp-action="GetAll"
+       asp-route-sortOrder="@ViewData["TaskSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-taskFilter="@ViewData["TaskFilter"]"
+       class="btn btn-dark @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="GetAll"
+       asp-route-sortOrder="@ViewData["TaskSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-taskFilter="@ViewData["TaskFilter"]"
+       class="btn btn-dark @nextDisabled">
+        Next
+    </a>
+</div>

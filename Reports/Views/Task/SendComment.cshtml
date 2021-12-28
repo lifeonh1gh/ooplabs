@@ -1,0 +1,15 @@
+﻿@model Reports.Models.Task.CommentSendModel
+@{
+    ViewData["Title"] = "Comment Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="SendComment">
+    <div class="form-group">
+        <input type="text" asp-for="Message" class="form-control" placeholder="send message..."/>
+    </div>
+    <div class="form-group">
+        <input class="btn btn-primary" type="submit" value="Send"/>
+        <a class="btn btn-danger" asp-action="GetAll">Back</a>
+    </div>
+</form>

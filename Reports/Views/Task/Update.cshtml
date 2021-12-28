@@ -1,0 +1,42 @@
+﻿@model Reports.Models.Task.TaskUpdateModel
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-3 my-3 border">
+    <h1>Update Task</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <hr/>
+            <form asp-action="Update" asp-controller="Task">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="State" class="form-control" placeholder="State"/>
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="Name" class="form-control" placeholder="Name"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="text" asp-for="Description" class="form-control" placeholder="Description"/>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="date" asp-for="ClosingDate" class="form-control" placeholder="Closing Date"/>
+                    <span asp-validation-for="ClosingDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" value="Save"/>
+                    <a class="btn btn-danger" asp-action="GetAll">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
