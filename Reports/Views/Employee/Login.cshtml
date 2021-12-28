@@ -1,0 +1,25 @@
+﻿﻿@model ReportsApp.Models.Employee.AuthenticateModel
+@{
+    ViewData["Title"] = "Authorization";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Authorization</h2>
+
+<div class="row">
+    <div class="col-sm-6">
+        <form asp-action="Login" asp-controller="Employee" asp-anti-forgery="true">
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email address</label>
+                    <input asp-for="Email" type="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <input asp-for="Password" type="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
+    </div>
+</div>
