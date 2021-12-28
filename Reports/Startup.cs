@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,12 @@ namespace Reports
             var connectionString = Configuration.GetConnectionString("PostgreSqlConnection");
             services.AddDbContextPool<ReportsContext>(option =>
                 option.UseNpgsql(connectionString));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Employee/Login");
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Employee/Login");
+                });
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new EmployeeAutoMapper());
