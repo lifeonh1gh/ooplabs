@@ -45,6 +45,7 @@ namespace Reports
             services.AddSingleton(mapper);
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddControllersWithViews();
         }
         
