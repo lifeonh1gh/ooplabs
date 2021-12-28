@@ -1,0 +1,46 @@
+﻿@model Reports.Entities.Report
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-3 my-3 border">
+    <h1>Report Details</h1>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.State)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.AssignedEmployee)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.AssignedEmployee)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+    </dl>
+    <div>
+        <a class="btn btn-primary" asp-action="Update" asp-route-Id="@Model.Id">Update</a>
+        <a class="btn btn-danger" asp-action="GetAll">Back</a>
+    </div>
+</div>

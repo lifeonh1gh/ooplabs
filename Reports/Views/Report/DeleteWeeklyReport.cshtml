@@ -1,0 +1,40 @@
+﻿@model Reports.Entities.WeeklyReport
+
+@{
+    ViewData["Title"] = "Delete WeeklyReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Deleting Weekly Report</h2>
+
+<h3>Would you like to continue?</h3>
+<div class="container p-3 my-3 border">
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Report)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Report)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Task)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Task)
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteWeeklyReport">
+        <input type="hidden" asp-for="Id"/>
+        <input class="btn btn-primary" type="submit" value="Yes"/>
+        <a class="btn btn-danger" asp-action="GetAll">No</a>
+    </form>
+
+</div>
