@@ -13,18 +13,18 @@ namespace Banks.Models.Transactions
         {
             Id = id;
             Accounts = accounts;
-            Client = client;
             if (Client == null)
             {
                 throw new BanksException("client is null");
             }
 
-            Bank = bank;
+            Client = client;
             if (Bank == null)
             {
                 throw new BanksException("bank is null");
             }
 
+            Bank = bank;
             AccountOneId = accountOneId;
             AccountTwoId = accountTwoId;
             Sum = sum;

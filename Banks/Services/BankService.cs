@@ -125,7 +125,7 @@ namespace Banks.Services
         {
             AccountsRepository accountsRepository = Accounts;
             var account = Accounts.GetAccount(accountId);
-            if (account.AccountId != accountId)
+            if (account == null)
             {
                 throw new BanksException("Money put transaction error, account not found");
             }
@@ -137,41 +137,41 @@ namespace Banks.Services
         public void Withdraw(int accountId, double sum)
         {
             AccountsRepository accountsRepository = Accounts;
-            var bank = Banks.GetBank(Accounts.GetAccount(accountId).BankId);
-            var client = Clients.GetClient(Accounts.GetAccount(accountId).ClientId);
-            var temp = new WithdrawTransaction(Transactions.Transactions.Count, ref accountsRepository, client, bank, accountId, sum, Time);
             var account = Accounts.GetAccount(accountId);
-            if (account.AccountId != accountId)
+            if (account == null)
             {
                 throw new BanksException("Money withdraw transaction error, account not found");
             }
 
+            var bank = Banks.GetBank(Accounts.GetAccount(accountId).BankId);
+            var client = Clients.GetClient(Accounts.GetAccount(accountId).ClientId);
             if (client.IsSuspect && sum > bank.SuspectLimit)
             {
                 throw new BanksException("The account is suspicious, the withdrawal operation is prohibited");
             }
 
+            var temp = new WithdrawTransaction(Transactions.Transactions.Count, ref accountsRepository, client, bank, accountId, sum, Time);
             Transactions.AddTransaction(temp);
         }
 
         public void Transfer(int accountOneId, int accountTwoId, double sum)
         {
             AccountsRepository accountsRepository = Accounts;
-            var bank = Banks.GetBank(Accounts.GetAccount(accountOneId).BankId);
-            var client = Clients.GetClient(Accounts.GetAccount(accountOneId).ClientId);
-            var temp = new TransferTransaction(Transactions.Transactions.Count, ref accountsRepository, client, bank, accountOneId, accountTwoId, sum, Time);
             var accountOne = Accounts.GetAccount(accountOneId);
             var accountTwo = Accounts.GetAccount(accountTwoId);
-            if (accountOne.AccountId != accountOneId && accountTwo.AccountId != accountTwoId)
+            if (accountOne == null && accountTwo == null)
             {
                 throw new BanksException("Money transfer transaction error, account not found");
             }
 
+            var bank = Banks.GetBank(Accounts.GetAccount(accountOneId).BankId);
+            var client = Clients.GetClient(Accounts.GetAccount(accountOneId).ClientId);
             if (client.IsSuspect && sum > bank.SuspectLimit)
             {
                 throw new BanksException("The account is suspicious, the transfer operation is prohibited");
             }
 
+            var temp = new TransferTransaction(Transactions.Transactions.Count, ref accountsRepository, client, bank, accountOneId, accountTwoId, sum, Time);
             Transactions.AddTransaction(temp);
         }
 
