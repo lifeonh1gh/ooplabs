@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,17 @@ namespace Reports
             var connectionString = Configuration.GetConnectionString("PostgreSqlConnection");
             services.AddDbContextPool<ReportsContext>(option =>
                 option.UseNpgsql(connectionString));
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new EmployeeAutoMapper());
+                mc.AddProfile(new TaskAutoMapper());
+                mc.AddProfile(new CommentAutoMapper());
+                mc.AddProfile(new ReportAutoMapper());
+                mc.AddProfile(new WeeklyReportAutoMapper());
+            });
+
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
             services.AddControllersWithViews();
         }
         
