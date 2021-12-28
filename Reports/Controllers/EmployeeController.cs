@@ -101,7 +101,7 @@ namespace Reports.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 employees = employees.Where(s => s.Name.Contains(searchString)
-                                                 && s.Email.Contains(searchString));
+                                                 || s.Email.Contains(searchString));
             }
 
             employees = sortOrder switch

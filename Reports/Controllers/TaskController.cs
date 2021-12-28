@@ -59,7 +59,7 @@ namespace Reports.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 tasks = tasks.Where(s => s.Name.Contains(searchString)
-                                         && s.State.ToString().Contains(searchString));
+                                         || s.State.ToString().Contains(searchString));
             }
 
             tasks = sortOrder switch
